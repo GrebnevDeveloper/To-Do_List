@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.developer.grebnev.to_do_list.R;
 import com.developer.grebnev.to_do_list.fragment.Utils;
+import com.developer.grebnev.to_do_list.model.ModelTask;
 
 import java.util.Calendar;
 
@@ -27,7 +28,7 @@ public class AddingTaskDialog extends DialogFragment {
     private AddingTaskListener addingTaskListener;
 
     public interface AddingTaskListener {
-        void onTaskAdded();
+        void onTaskAdded(ModelTask newTask);
         void onTaskAddingCancel();
     }
 
@@ -37,7 +38,7 @@ public class AddingTaskDialog extends DialogFragment {
         try {
             addingTaskListener = (AddingTaskListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implements AddingTaskListener");
+            throw new ClassCastException(activity.toString() + " must implement AddingTaskListener");
         }
     }
 
@@ -58,7 +59,7 @@ public class AddingTaskDialog extends DialogFragment {
         TextInputLayout tilDate = (TextInputLayout) container.findViewById(R.id.tilDialogTaskDate);
         final EditText etDate = tilDate.getEditText();
 
-        TextInputLayout tilTime = (TextInputLayout) container.findViewById(R.id.tilDialogTaskTime);
+        final TextInputLayout tilTime = (TextInputLayout) container.findViewById(R.id.tilDialogTaskTime);
         final EditText etTime = tilTime.getEditText();
 
         tilTitle.setHint(getResources().getString(R.string.task_title));
@@ -66,6 +67,10 @@ public class AddingTaskDialog extends DialogFragment {
         tilTime.setHint(getResources().getString(R.string.task_time));
 
         builder.setView(container);
+
+        final ModelTask task = new ModelTask();
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
 
         etDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +82,10 @@ public class AddingTaskDialog extends DialogFragment {
                 DialogFragment datePickerFragment = new DatePicker() {
                     @Override
                     public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar dateCalender = Calendar.getInstance();
-                        dateCalender.set(year, monthOfYear, dayOfMonth);
-                        etDate.setText(Utils.getDate(dateCalender.getTimeInMillis()));
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        etDate.setText(Utils.getDate(calendar.getTimeInMillis()));
                     }
 
                     @Override
@@ -97,12 +103,13 @@ public class AddingTaskDialog extends DialogFragment {
                 if (etTime.length() == 0) {
                     etTime.setText(" ");
                 }
-                DialogFragment timePiccerFragment = new TimePicker() {
+                DialogFragment timePickerFragment = new TimePicker() {
                     @Override
                     public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
-                        Calendar timeCalendar = Calendar.getInstance();
-                        timeCalendar.set(0, 0, 0, hourOfDay, minute);
-                        etTime.setText(Utils.getTime(timeCalendar.getTimeInMillis()));
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        calendar.set(Calendar.SECOND, 0);
+                        etTime.setText(Utils.getTime(calendar.getTimeInMillis()));
                     }
 
                     @Override
@@ -110,14 +117,18 @@ public class AddingTaskDialog extends DialogFragment {
                         etTime.setText(null);
                     }
                 };
-                timePiccerFragment.show(getFragmentManager(), "TimePicker");
+                timePickerFragment.show(getFragmentManager(), "TimePicker");
             }
         });
 
         builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                addingTaskListener.onTaskAdded();
+                task.setTitle(etTitle.getText().toString());
+                if (etDate.length() != 0 || etTime.length() != 0) {
+                    task.setDate(calendar.getTimeInMillis());
+                }
+                addingTaskListener.onTaskAdded(task);
                 dialog.dismiss();
             }
         });
@@ -151,8 +162,7 @@ public class AddingTaskDialog extends DialogFragment {
                         if (s.length() == 0) {
                             positiveButton.setEnabled(false);
                             tilTitle.setError(getResources().getString(R.string.dialog_error_empty_title));
-                        }
-                        else {
+                        } else {
                             positiveButton.setEnabled(true);
                             tilTitle.setErrorEnabled(false);
                         }
