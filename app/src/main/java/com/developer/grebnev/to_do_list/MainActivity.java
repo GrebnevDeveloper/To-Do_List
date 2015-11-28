@@ -17,17 +17,19 @@ import com.developer.grebnev.to_do_list.adapter.TabAdapter;
 import com.developer.grebnev.to_do_list.dialog.AddingTaskDialog;
 import com.developer.grebnev.to_do_list.fragment.CurrentTaskFragment;
 import com.developer.grebnev.to_do_list.fragment.DoneTaskFragment;
+import com.developer.grebnev.to_do_list.fragment.TaskFragment;
 import com.developer.grebnev.to_do_list.model.ModelTask;
 
 
-public class MainActivity extends AppCompatActivity implements AddingTaskDialog.AddingTaskListener {
+public class MainActivity extends AppCompatActivity implements AddingTaskDialog.AddingTaskListener,
+        CurrentTaskFragment.OnTaskDoneListener, DoneTaskFragment.OnTaskRestoreListener {
 
     FragmentManager fragmentManager;
 
     TabAdapter tabAdapter;
 
-    CurrentTaskFragment currentTaskFragment;
-    DoneTaskFragment doneTaskFragment;
+    TaskFragment currentTaskFragment;
+    TaskFragment doneTaskFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
     private void setUI() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitleTextColor(getResources().getColor(R.color.whitte));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
             setSupportActionBar(toolbar);
         }
 
@@ -117,5 +119,15 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
     @Override
     public void onTaskAddingCancel() {
         Toast.makeText(this, "Task Adding cancel.", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTaskDone(ModelTask task) {
+        doneTaskFragment.addTask(task);
+    }
+
+    @Override
+    public void onTaskRestore(ModelTask task) {
+        currentTaskFragment.addTask(task);
     }
 }

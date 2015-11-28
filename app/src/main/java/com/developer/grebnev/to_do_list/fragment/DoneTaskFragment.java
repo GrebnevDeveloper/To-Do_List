@@ -1,6 +1,7 @@
 package com.developer.grebnev.to_do_list.fragment;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,19 +11,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.developer.grebnev.to_do_list.R;
+import com.developer.grebnev.to_do_list.adapter.DoneTaskAdapter;
+import com.developer.grebnev.to_do_list.model.ModelTask;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DoneTaskFragment extends Fragment {
-
-    RecyclerView rvDoneTask;
-    RecyclerView.LayoutManager layoutManager;
+public class DoneTaskFragment extends TaskFragment {
 
     public DoneTaskFragment() {
         // Required empty public constructor
     }
 
+    OnTaskRestoreListener onTaskRestoreListener;
+
+    public interface OnTaskRestoreListener {
+        void onTaskRestore(ModelTask task);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            onTaskRestoreListener = (OnTaskRestoreListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+            + " must implement OnTaskRestoreListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,13 +47,20 @@ public class DoneTaskFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_done_task, container, false);
 
-        rvDoneTask = (RecyclerView) rootView.findViewById(R.id.rvDoneTasks);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.rvDoneTasks);
 
         layoutManager = new LinearLayoutManager(getActivity());
-        rvDoneTask.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new DoneTaskAdapter(this);
+        recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
 
+    @Override
+    public void moveTask(ModelTask task) {
+        onTaskRestoreListener.onTaskRestore(task);
+    }
 }
