@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 
 import com.developer.grebnev.to_do_list.R;
 import com.developer.grebnev.to_do_list.adapter.CurrentTasksAdapter;
+import com.developer.grebnev.to_do_list.database.DBHelper;
 import com.developer.grebnev.to_do_list.model.ModelTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +63,18 @@ public class CurrentTaskFragment extends TaskFragment {
         return rootView;
     }
 
+
+    @Override
+    public void addTaskFromDB() {
+        List<ModelTask> tasks = new ArrayList<>();
+        tasks.addAll(activity.dbHelper.query().getTasks(DBHelper.SELECTION_STATUS + " OR "
+        + DBHelper.SELECTION_STATUS, new String[]{Integer.toString(ModelTask.STATUS_CURRENT),
+                        Integer.toString(ModelTask.STATUS_OVERDUE)}, DBHelper.TASKS_DATE_COLUMN));
+
+        for (int i = 0; i < tasks.size(); i++) {
+            addTask(tasks.get(i), false);
+        }
+    }
 
     @Override
     public void moveTask(ModelTask task) {

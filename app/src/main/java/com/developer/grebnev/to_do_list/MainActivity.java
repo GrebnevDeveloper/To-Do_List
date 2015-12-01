@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.developer.grebnev.to_do_list.adapter.TabAdapter;
+import com.developer.grebnev.to_do_list.database.DBHelper;
 import com.developer.grebnev.to_do_list.dialog.AddingTaskDialog;
 import com.developer.grebnev.to_do_list.fragment.CurrentTaskFragment;
 import com.developer.grebnev.to_do_list.fragment.DoneTaskFragment;
@@ -31,14 +31,16 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
     TaskFragment currentTaskFragment;
     TaskFragment doneTaskFragment;
 
+    public DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbHelper = new DBHelper(getApplicationContext());
         fragmentManager = getFragmentManager();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         setUI();
     }
 
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
 
     @Override
     public void onTaskAdded(ModelTask newTask) {
-        currentTaskFragment.addTask(newTask);
+        currentTaskFragment.addTask(newTask, true);
         Toast.makeText(this, "Task Add.", Toast.LENGTH_LONG).show();
     }
 
@@ -123,11 +125,11 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
 
     @Override
     public void onTaskDone(ModelTask task) {
-        doneTaskFragment.addTask(task);
+        doneTaskFragment.addTask(task, false);
     }
 
     @Override
     public void onTaskRestore(ModelTask task) {
-        currentTaskFragment.addTask(task);
+        currentTaskFragment.addTask(task, false);
     }
 }
