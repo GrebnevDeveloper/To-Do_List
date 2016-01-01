@@ -89,6 +89,10 @@ public class DoneTaskFragment extends TaskFragment {
 
     @Override
     public void moveTask(ModelTask task) {
+        if (task.getDate() != 0) {
+            alarmHelper.setAlarm(task);
+        }
+
         onTaskRestoreListener.onTaskRestore(task);
     }
 }

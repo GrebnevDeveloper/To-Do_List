@@ -11,6 +11,7 @@ import android.view.View;
 import com.developer.grebnev.to_do_list.MainActivity;
 import com.developer.grebnev.to_do_list.R;
 import com.developer.grebnev.to_do_list.adapter.TaskAdapter;
+import com.developer.grebnev.to_do_list.alarm.AlarmHelper;
 import com.developer.grebnev.to_do_list.model.Item;
 import com.developer.grebnev.to_do_list.model.ModelTask;
 
@@ -25,6 +26,8 @@ public abstract class TaskFragment extends Fragment {
 
     public MainActivity activity;
 
+    public AlarmHelper alarmHelper;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -32,6 +35,8 @@ public abstract class TaskFragment extends Fragment {
         if (getActivity() != null) {
             activity = (MainActivity) getActivity();
         }
+
+        alarmHelper = AlarmHelper.getInstance();
 
         addTaskFromDB();
     }
@@ -98,6 +103,7 @@ public abstract class TaskFragment extends Fragment {
                         @Override
                         public void onViewDetachedFromWindow(View v) {
                             if (isRemoved[0]) {
+                                alarmHelper.removeAlarm(timeStamp);
                                 activity.dbHelper.removeTask(timeStamp);
                             }
                         }

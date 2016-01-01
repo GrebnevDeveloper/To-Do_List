@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.developer.grebnev.to_do_list.adapter.TabAdapter;
+import com.developer.grebnev.to_do_list.alarm.AlarmHelper;
 import com.developer.grebnev.to_do_list.database.DBHelper;
 import com.developer.grebnev.to_do_list.dialog.AddingTaskDialog;
 import com.developer.grebnev.to_do_list.fragment.CurrentTaskFragment;
@@ -40,11 +41,24 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AlarmHelper.getInstance().init(getApplicationContext());
         dbHelper = new DBHelper(getApplicationContext());
         fragmentManager = getFragmentManager();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setUI();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.activityPaused();
     }
 
     @Override
@@ -135,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
     @Override
     public void onTaskAdded(ModelTask newTask) {
         currentTaskFragment.addTask(newTask, true);
-        Toast.makeText(this, "Task Add.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Task Add", Toast.LENGTH_LONG).show();
     }
 
     @Override
