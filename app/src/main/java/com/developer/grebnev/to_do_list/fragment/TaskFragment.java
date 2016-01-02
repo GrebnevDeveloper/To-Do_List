@@ -1,6 +1,7 @@
 package com.developer.grebnev.to_do_list.fragment;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.developer.grebnev.to_do_list.MainActivity;
 import com.developer.grebnev.to_do_list.R;
 import com.developer.grebnev.to_do_list.adapter.TaskAdapter;
 import com.developer.grebnev.to_do_list.alarm.AlarmHelper;
+import com.developer.grebnev.to_do_list.dialog.EditTaskDialog;
 import com.developer.grebnev.to_do_list.model.Item;
 import com.developer.grebnev.to_do_list.model.ModelTask;
 
@@ -41,28 +43,10 @@ public abstract class TaskFragment extends Fragment {
         addTaskFromDB();
     }
 
-    public void addTask(ModelTask newTask, boolean savaToDB) {
-        int position = -1;
+    public abstract void addTask(ModelTask newTask, boolean savaToDB);
 
-        for (int i = 0; i < adapter.getItemCount(); i++) {
-            if (adapter.getItem(i).isTask()) {
-                ModelTask task = (ModelTask) adapter.getItem(i);
-                if (newTask.getDate() < task.getDate()) {
-                    position = i;
-                    break;
-                }
-            }
-        }
-        if (position != -1) {
-            adapter.addItem(position, newTask);
-        }
-        else {
-            adapter.addItem(newTask);
-        }
-
-        if (savaToDB == true) {
-            activity.dbHelper.saveTask(newTask);
-        }
+    public void updateTask(ModelTask task) {
+        adapter.updateTask(task);
     }
 
     public void removeTaskDialog(final int location) {
@@ -123,6 +107,11 @@ public abstract class TaskFragment extends Fragment {
         }
         dialogBuilder.show();
 
+    }
+
+    public void showTaskEditDialog(ModelTask task) {
+        DialogFragment editingTaskDialog = EditTaskDialog.newInstance(task);
+        editingTaskDialog.show(getActivity().getFragmentManager(), "EditTaskDialog");
     }
 
     public abstract void addTaskFromDB();

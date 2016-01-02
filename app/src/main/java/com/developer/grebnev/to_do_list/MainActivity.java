@@ -17,6 +17,7 @@ import com.developer.grebnev.to_do_list.adapter.TabAdapter;
 import com.developer.grebnev.to_do_list.alarm.AlarmHelper;
 import com.developer.grebnev.to_do_list.database.DBHelper;
 import com.developer.grebnev.to_do_list.dialog.AddingTaskDialog;
+import com.developer.grebnev.to_do_list.dialog.EditTaskDialog;
 import com.developer.grebnev.to_do_list.fragment.CurrentTaskFragment;
 import com.developer.grebnev.to_do_list.fragment.DoneTaskFragment;
 import com.developer.grebnev.to_do_list.fragment.TaskFragment;
@@ -24,7 +25,7 @@ import com.developer.grebnev.to_do_list.model.ModelTask;
 
 
 public class MainActivity extends AppCompatActivity implements AddingTaskDialog.AddingTaskListener,
-        CurrentTaskFragment.OnTaskDoneListener, DoneTaskFragment.OnTaskRestoreListener {
+        CurrentTaskFragment.OnTaskDoneListener, DoneTaskFragment.OnTaskRestoreListener, EditTaskDialog.EditingTaskListener {
 
     FragmentManager fragmentManager;
 
@@ -165,5 +166,11 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
     @Override
     public void onTaskRestore(ModelTask task) {
         currentTaskFragment.addTask(task, false);
+    }
+
+    @Override
+    public void onTaskEdited(ModelTask updateTask) {
+        currentTaskFragment.updateTask(updateTask);
+        dbHelper.update().task(updateTask);
     }
 }
