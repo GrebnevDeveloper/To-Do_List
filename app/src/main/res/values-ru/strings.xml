@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="priority_levels">
+        <item>Низкий приоритет</item>
+        <item>Нормальный приоритет</item>
+        <item>Высокий приоритет</item>
+    </string-array>
+
+    <string name="app_name">Список дел</string>
+    <string name="action_settings">Настройки</string>
+    <string name="current_task">Текущие</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="dialog_editing_title">Изменить задачу</string>
+    <string name="dialog_error_empty_title">Пожалуйста, заполните это поле</string>
+    <string name="dialog_ok">Ок</string>
+    <string name="dialog_removing_message">Вы хотите удалить задачу?</string>
+    <string name="dialog_title">Добавить задачу</string>
+    <string name="done_task">Выполненные</string>
+    <string name="task_time">Время</string>
+    <string name="task_title">Заголовок</string>
+    <string name="task_date">Дата</string>
+    <string name="separator_tomorrow">Завтра</string>
+    <string name="separator_today">Сегодня</string>
+    <string name="separator_overdue">Прошедшие</string>
+    <string name="separator_fiture">Будущие</string>
+    <string name="removed">Удалено</string>
+    <string name="fragment_current_task">Текущая задача</string>
+    <string name="fragment_done_task">Выполненная задача</string>
+    <string name="hello_blank_fragment">Пустой фрагмент</string>
+</resources>

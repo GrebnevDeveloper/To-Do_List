@@ -77,7 +77,8 @@ public class AddingTaskDialog extends DialogFragment {
         final ModelTask task = new ModelTask();
 
         ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.support_simple_spinner_dropdown_item, ModelTask.PRIORITY_LEVEL);
+                R.layout.support_simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.priority_levels));
 
         spPriority.setAdapter(priorityAdapter);
 
