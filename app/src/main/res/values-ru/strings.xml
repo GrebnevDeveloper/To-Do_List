@@ -7,6 +7,8 @@
         <item>Высокий приоритет</item>
     </string-array>
 
+    <string name="menu_item_notification">Напоминания</string>
+    <string name="action_menu">Меню</string>
     <string name="app_name">Список дел</string>
     <string name="action_settings">Настройки</string>
     <string name="current_task">Текущие</string>

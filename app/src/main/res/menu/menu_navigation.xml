@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/actionCurrentItem"
+        android:orderInCategory="1"
+        android:title="@string/current_task"
+        android:icon="@drawable/ic_message_white_48dp" />
+    <item
+        android:id="@+id/actionDoneItem"
+        android:orderInCategory="1"
+        android:title="@string/done_task"
+        android:icon="@drawable/ic_message_white_48dp"/>
+
+
+</menu>
