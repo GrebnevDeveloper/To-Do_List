@@ -37,7 +37,13 @@
     <string name="action_menu">Menu</string>
     <string name="view_navigation_open">Open</string>
     <string name="view_navigation_close">Close</string>
+    <string name="sign_up">Sign Up</string>
 
+    <string name="email">Email</string>
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="progress_sing_up"><![CDATA[Signing you up&#8230;]]></string>
 
 
 </resources>

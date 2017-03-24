@@ -2,6 +2,7 @@ package com.developer.grebnev.to_do_list;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,9 +15,8 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+
 import com.developer.grebnev.to_do_list.adapter.TabAdapter;
 import com.developer.grebnev.to_do_list.alarm.AlarmHelper;
 import com.developer.grebnev.to_do_list.database.DBHelper;
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setUI();
+
     }
 
     @Override
@@ -101,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
         });
 
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.view_navigation_open, R.string.view_navigation_close);
-        toggle.setDrawerIndicatorEnabled(false);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.view_navigation_open, R.string.view_navigation_close);
+        toggle.setDrawerIndicatorEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
             }
         });
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -122,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
                         break;
                     case  R.id.actionDoneItem:
                         viewPager.setCurrentItem(1);
+                        break;
+                    case R.id.actionSignUp:
                         break;
                 }
                 return true;
