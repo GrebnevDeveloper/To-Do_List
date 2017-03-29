@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
                         viewPager.setCurrentItem(1);
                         break;
                     case R.id.actionSignUp:
+                        startActivity(new Intent(getApplicationContext(), SignUp.class));
                         break;
                 }
                 return true;
