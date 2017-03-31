@@ -1,4 +1,4 @@
-package com.developer.grebnev.to_do_list;
+package com.developer.grebnev.to_do_list.authentication;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -6,18 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.developer.grebnev.to_do_list.MainActivity;
+import com.developer.grebnev.to_do_list.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -31,9 +29,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
- * Created by Grebnev on 22.01.2016.
+ * Created by Grebnev on 30.03.2017.
  */
-public class SignUp extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private final String TAG = this.getClass().getSimpleName();
     private static final int RC_SIGN_IN = 9001;
 
@@ -44,9 +43,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, G
 
     private EditText etEmail;
     private EditText etPassword;
-    private EditText etRepeatPassword;
 
-    private Button btnSignUp;
+    private Button btnLinkSignUp;
     private Button btnSingIn;
     private ImageButton imbtnGooglePlus;
     private ProgressDialog dialog;
@@ -54,7 +52,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, G
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up);
+        setContentView(R.layout.sign_in);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -72,35 +70,30 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, G
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
+                    Toast.makeText(SignInActivity.this, R.string.you_sign_in, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                    startActivity(intent);
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
-                    // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
 
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
         etEmail = (EditText) findViewById(R.id.input_email);
         etPassword = (EditText) findViewById(R.id.input_password);
-//        etRepeatPassword = (EditText) findViewById(R.id.input_repeat_password);
-//        etRepeatPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == R.id.et_action_sign_up || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-//                    signUp();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
 
         btnSingIn = (Button) findViewById(R.id.btn_sign_in);
-        btnSignUp = (Button) findViewById(R.id.btn_sign_up);
+        btnLinkSignUp = (Button) findViewById(R.id.btn_link_sign_up);
         imbtnGooglePlus = (ImageButton) findViewById(R.id.imbtn_google_plus);
         btnSingIn.setOnClickListener(this);
-        btnSignUp.setOnClickListener(this);
+        btnLinkSignUp.setOnClickListener(this);
         imbtnGooglePlus.setOnClickListener(this);
     }
 
@@ -142,20 +135,22 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, G
         String userEmail = etEmail.getText().toString().trim();
         String userPassword = etPassword.getText().toString().trim();
 
-        dialog = new ProgressDialog(SignUp.this);
+        dialog = new ProgressDialog(SignInActivity.this);
         dialog.setMessage(getString(R.string.request_in_progress));
-        dialog.show();
 
         switch (v.getId()) {
             case R.id.btn_sign_in:
+                dialog.show();
                 Log.v(TAG, "Button sign in click");
                 signIn(userEmail, userPassword, dialog);
                 break;
-            case R.id.btn_sign_up:
-                Log.v(TAG, "Button create account click");
-                signUp(userEmail, userPassword, dialog);
+            case R.id.btn_link_sign_up:
+                Log.v(TAG, "Button link sign up click");
+                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+                startActivity(intent);
                 break;
             case R.id.imbtn_google_plus:
+                dialog.show();
                 Log.v(TAG, "ImageButton google plus click");
                 signInWithGoogle();
                 break;
@@ -164,39 +159,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, G
 
     private void signIn(String userEmail, String userPassword, final ProgressDialog dialog) {
         Log.v(TAG, userEmail + " " + userPassword + " SignIn");
-        mAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.v(TAG, "Complete");
-                Toast.makeText(SignUp.this, task.toString(), Toast.LENGTH_LONG).show();
                 dialog.dismiss();
-                if (task.isSuccessful()) {
-                    Intent intent = new Intent(SignUp.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(SignUp.this, task.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    private void signUp(String userEmail, String userPassword, final ProgressDialog dialog) {
-        Log.v(TAG, userEmail + " " + userPassword + "SignUp");
-        mAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.v(TAG, "Complete");
-                Toast.makeText(SignUp.this, task.toString(), Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-                if (task.isSuccessful()) {
-                    Intent intent = new Intent(SignUp.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(SignUp.this, task.toString(), Toast.LENGTH_LONG).show();
+                if (!task.isSuccessful()) {
+                    Toast.makeText(SignInActivity.this, R.string.incorrect_email_or_password, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -217,11 +186,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, G
                         dialog.dismiss();
 
 
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(SignUp.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+//                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "signInWithCredential", task.getException());
+//                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 });
     }

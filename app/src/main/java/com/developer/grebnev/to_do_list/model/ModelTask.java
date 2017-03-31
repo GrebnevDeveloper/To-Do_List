@@ -19,7 +19,6 @@ public class ModelTask implements Item {
     public static final int STATUS_CURRENT = 1;
     public static final int STATUS_DONE = 2;
 
-
     private String title;
     private long date;
     private int priority;
@@ -34,6 +33,14 @@ public class ModelTask implements Item {
     }
 
     public ModelTask(String title, long date, int priority, int status, long timeStamp) {
+        this.title = title;
+        this.date = date;
+        this.priority = priority;
+        this.status = status;
+        this.timeStamp = timeStamp;
+    }
+
+    public ModelTask(String title, long date, int dateStatus, int priorityColor, boolean task, int priority, int status, long timeStamp) {
         this.title = title;
         this.date = date;
         this.priority = priority;

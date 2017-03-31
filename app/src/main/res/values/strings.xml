@@ -45,6 +45,15 @@
     <string name="repeat_password">Repeat password</string>
     <string name="request_in_progress">Request in progress. Please, wait!</string>
     <string name="sign_in">Sign in</string>
+    <string name="account_sign_up">Do not have an account, sign up!</string>
+    <string name="already_registered_sign_in">already registered, sign in!</string>
+    <string name="incorrect_email_or_password">Error, incorrect email or password!</string>
+    <string name="you_sign_in">You sign in!</string>
+    <string name="enter_valid_email">Enter a valid email.</string>
+    <string name="required">Required!</string>
+    <string name="enter_valid_password">Password too short, enter minimum 6 characters!</string>
+    <string name="password_not_match">Password not match</string>
+    <string name="you_can_not_this_email">You can not this email.</string>
 
 
 </resources>

@@ -8,11 +8,22 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import com.developer.grebnev.to_do_list.model.ModelTask;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Grebnev on 01.12.2015.
  */
 public class DBHelper extends SQLiteOpenHelper {
+
+    private DatabaseReference myRef;
+    private FirebaseUser user;
+    private FirebaseAuth mAuth;
 
     public static final int DATABASE_VERSION = 1;
 
@@ -67,6 +78,10 @@ public class DBHelper extends SQLiteOpenHelper {
         newValues.put(TASKS_TIME_STAMP_COLUMN, task.getTimeStamp());
 
         getWritableDatabase().insert(TASKS_TABLE, null, newValues);
+
+        user = mAuth.getInstance().getCurrentUser();
+        myRef = FirebaseDatabase.getInstance().getReference(user.getUid());
+        myRef.child("tasks").child(Long.toString(task.getTimeStamp())).setValue(task);
     }
 
     public DBQueryManager query() {

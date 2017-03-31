@@ -21,69 +21,82 @@
             android:layout_gravity="center_horizontal" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/input_email"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
                 android:paddingLeft="10dp"
+                android:layout_height="40dp"
                 android:inputType="textEmailAddress"
                 android:background="@drawable/background_edit_text"
-                android:textColorHint="@color/white"
                 android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_password"
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/input_password"
                 android:paddingLeft="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:inputType="textPassword"
                 android:background="@drawable/background_edit_text"
                 android:hint="Password" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_repeat_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText
-                android:id="@+id/input_repeat_password"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="10dp"
-                android:inputType="textPassword"
-                android:imeActionId="@+id/et_action_sign_up"
-                android:background="@drawable/background_edit_text"
-                android:hint="Repeat Password"/>
-        </android.support.design.widget.TextInputLayout>
-
-
-
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_sign_up"
+            android:id="@+id/btn_sign_in"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="10dp"
             android:padding="12dp"
-            android:text="Create Account"/>
+            android:text="@string/sign_in"/>
 
-        <Button
-            android:id="@+id/btn_link_sign_in"
+        <TextView
+            android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/already_registered_sign_in"
+            android:layout_marginBottom="10dp"
+            android:text="or use profiles"
+            android:gravity="center"
+            android:textSize="16dip"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/imbtn_google_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_checkbox_blank_circle_white_48dp"
+                android:src="@drawable/ic_google_plus"
+                android:layout_marginRight="20dp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_checkbox_blank_circle_white_48dp"
+                android:src="@drawable/ic_vk"
+                android:layout_marginRight="20dp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_checkbox_blank_circle_white_48dp"
+                android:src="@drawable/ic_facebook"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_link_sign_up"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_sign_up"
             android:background="@android:color/transparent"
             android:layout_marginTop="10dp"/>
 

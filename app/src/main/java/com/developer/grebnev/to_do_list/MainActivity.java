@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import com.developer.grebnev.to_do_list.adapter.TabAdapter;
 import com.developer.grebnev.to_do_list.alarm.AlarmHelper;
+import com.developer.grebnev.to_do_list.authentication.SignUpActivity;
 import com.developer.grebnev.to_do_list.database.DBHelper;
 import com.developer.grebnev.to_do_list.dialog.AddingTaskDialog;
 import com.developer.grebnev.to_do_list.dialog.EditTaskDialog;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialog.
                         viewPager.setCurrentItem(1);
                         break;
                     case R.id.actionSignUp:
-                        startActivity(new Intent(getApplicationContext(), SignUp.class));
+                        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
                         break;
                 }
                 return true;

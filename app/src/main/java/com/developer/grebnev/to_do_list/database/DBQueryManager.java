@@ -2,8 +2,17 @@ package com.developer.grebnev.to_do_list.database;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.developer.grebnev.to_do_list.model.ModelTask;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +21,12 @@ import java.util.List;
  * Created by Grebnev on 01.12.2015.
  */
 public class DBQueryManager {
+    private final String TAG = this.getClass().getSimpleName();
 
     private SQLiteDatabase database;
+    private DatabaseReference myRef;
+    private FirebaseUser user;
+    private FirebaseAuth mAuth;
 
     DBQueryManager(SQLiteDatabase database) {
         this.database = database;
@@ -38,7 +51,24 @@ public class DBQueryManager {
     }
 
     public List<ModelTask> getTasks(String selection, String[]selectionArgs, String oerderBy) {
-        List<ModelTask> tasks = new ArrayList<>();
+        final List<ModelTask> tasks = new ArrayList<>();
+
+//        user = mAuth.getInstance().getCurrentUser();
+//        myRef = FirebaseDatabase.getInstance().getReference(user.getUid());
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                GenericTypeIndicator<ModelTask> t = new GenericTypeIndicator<ModelTask>() {};
+//                ModelTask task = dataSnapshot.child("tasks").getValue(t);
+//                tasks.add(task);
+//                Log.v(TAG, Integer.toString(tasks.size()) + " " + tasks.get(0).getTitle());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         Cursor c = database.query(DBHelper.TASKS_TABLE, null, selection, selectionArgs, null, null, oerderBy);
 
@@ -55,6 +85,7 @@ public class DBQueryManager {
             } while (c.moveToNext());
         }
         c.close();
+
         return tasks;
     }
 }
